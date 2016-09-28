@@ -19,5 +19,5 @@ then
 else
 	mkdir /etc/nomad
 	echo -e "client {\n  options {\n "driver.raw_exec.enable" = "1"\n }\n}\n" > /etc/nomad/client.conf
-	exec nomad agent -client -bind=$IP -data-dir /tmp -servers $SERVER -conf /etc/nomad/client.conf >>/var/log/nomad.log 2>&1
+	exec nomad agent -client -bind=$IP -data-dir /tmp -servers $SERVER -config /etc/nomad/client.conf >>/var/log/nomad.log 2>&1
 fi
