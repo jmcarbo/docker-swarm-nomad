@@ -1,0 +1,17 @@
+#!/bin/sh
+MEMBERS=$(serf members |wc |awk '{ print $1; }')
+MIN_MEMBERS=${MIN_MEMBERS:-3}
+
+while [ "$MIN_MEMBERS" -gt "$MEMBERS" ] 
+do
+	sleep 5
+	MEMBERS=$(serf members |wc |awk '{ print $1; }')
+done
+
+export IP=$(hostname -I | cut -f 1 -d ' ')
+export LEADER=$(serf members|sort -k 2 | head -n 1 | cut -f 3 -d ' ' |cut -f 1 -d ':')
+#if [$IP==$LEADER] 
+#then
+	exec nomad agent -server -bind=$IP -data-dir /tmp -bootstrap-expect $MIN_MEMBERS -join $LEADER -retry-join $LEADER  >>/var/log/consul.log 2>&1
+#else
+#fi
