@@ -10,8 +10,12 @@ done
 
 export IP=$(hostname -I | cut -f 1 -d ' ')
 export LEADER=$(serf members|sort -k 2 | head -n 1 | cut -f 3 -d ' ' |cut -f 1 -d ':')
+export SERVER=${SERVER:-nomad:4647}
+
 #if [$IP==$LEADER] 
-#then
+if [ -z "$WORKER" ]
+then
 	exec nomad agent -server -bind=$IP -data-dir /tmp -bootstrap-expect $MIN_MEMBERS -join $LEADER -retry-join $LEADER  >>/var/log/consul.log 2>&1
-#else
-#fi
+else
+	exec nomad agent -client -bind=$IP -data-dir /tmp -servers $SERVER >>/var/log/consul.log 2>&1
+fi
