@@ -8,7 +8,8 @@ do
 	MEMBERS=$(serf members |wc |awk '{ print $1; }')
 done
 
-export IP=$(hostname -I | cut -f 1 -d ' ')
+NETWORK=${NETWORK:-10.0.1.*}
+export IP=$(hostname -i | grep -o $NETWORK )
 export LEADER=$(serf members|sort -k 2 | head -n 1 | cut -f 3 -d ' ' |cut -f 1 -d ':')
 export SERVER=${SERVER:-nomad:4647}
 
