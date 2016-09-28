@@ -18,6 +18,6 @@ then
 	exec nomad agent -server -bind=$IP -data-dir /tmp -bootstrap-expect $MIN_MEMBERS -join $LEADER -retry-join $LEADER  >>/var/log/nomad.log 2>&1
 else
 	mkdir /etc/nomad
-	echo -e "client {\n  options {\n "driver.raw_exec.enable" = "1"\n }\n}\n" > /etc/nomad/client.conf
+	echo -e "client {\n  options {\n \"driver.raw_exec.enablei\" = \"1i\"\n }\n}\n" > /etc/nomad/client.conf
 	exec nomad agent -client -bind=$IP -data-dir /tmp -servers $SERVER -config /etc/nomad/client.conf >>/var/log/nomad.log 2>&1
 fi
