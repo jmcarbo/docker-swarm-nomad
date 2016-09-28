@@ -4,3 +4,4 @@ RUN cp nomad /usr/local/bin/nomad && chmod +x /usr/local/bin/nomad
 RUN mkdir /etc/service/nomad 
 ADD nomadrun /etc/service/nomad/run 
 RUN chmod +x /etc/service/nomad/run
+ADD /usr/bin/docker /usr/local/bin/docker
